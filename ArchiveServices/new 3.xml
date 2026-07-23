@@ -1,0 +1,47 @@
+<Archiver.dbo.cfgArchiveAndTailTable>
+  <ConfigID>2</ConfigID>
+  <IsArchive>1</IsArchive>
+  <IsTail>1</IsTail>
+  <IsVerify>1</IsVerify>
+  <IsActive>1</IsActive>
+  <IsEnabled>1</IsEnabled>
+  <MaxRowsToMove>50000</MaxRowsToMove>
+  <MaxDeleteRowsPerBatch>50000</MaxDeleteRowsPerBatch>
+  <GroupName>PY</GroupName>
+  <PlantCode>ETCT</PlantCode>
+  <SourceServerName>ETCTSQLPY</SourceServerName>
+  <SourceDatabaseName>ShopFloor</SourceDatabaseName>
+  <SourceSchemaName>EBS</SourceSchemaName>
+  <SourceTableName>FuseOrder</SourceTableName>
+  <DestinationServerName>CGD2ARCH1</DestinationServerName>
+  <DestinationDatabaseName>ETCTSQLPY_ShopFloor_Archive</DestinationDatabaseName>
+  <DestinationSchemaName>EBS</DestinationSchemaName>
+  <DestinationTableName>FuseOrder</DestinationTableName>
+  <IDColumn>WorkOrderId</IDColumn>
+  <SourceKey>WOrderNum,WorkOrderId</SourceKey>
+  <IsSourceKeyUnique>1</IsSourceKeyUnique>
+  <DestinationKey>WOrderNum,WorkOrderId</DestinationKey>
+  <IsDestinationKeyUnique>0</IsDestinationKeyUnique>
+  <DateColumn>TransactionDate</DateColumn>
+  <RetentionDays>365</RetentionDays>
+  <SelectStartDate>1900-01-01T00:00:00</SelectStartDate>
+  <HighwaterMarkDate>1900-01-01T00:00:00</HighwaterMarkDate>
+  <HighwaterMarkID>0</HighwaterMarkID>
+  <OtherCondition>IsCurrentVersion = 1</OtherCondition>
+  <ExcludeColumn></ExcludeColumn>
+  <RowsRemaining>0</RowsRemaining>
+  <RunFrequencyDays>7</RunFrequencyDays>
+  <NextRunDate>1905-03-14T00:00:00</NextRunDate>
+  <LastRunStatus>Error</LastRunStatus>
+  <LastRunStartDate>2025-10-23T16:06:42</LastRunStartDate>
+  <LastRunEndDate>2025-10-23T16:22:15</LastRunEndDate>
+  <ProcessID>132337</ProcessID>
+  <SourceInitialRowCount>0</SourceInitialRowCount>
+  <DestinationInitialRowCount>0</DestinationInitialRowCount>
+  <SourceFinalRowCount>0</SourceFinalRowCount>
+  <DestinationFinalRowCount>0</DestinationFinalRowCount>
+  <CreatedDate>2025-10-23T12:40:36.550</CreatedDate>
+  <CreatedBy>JKjeer</CreatedBy>
+  <LastEditBy>JKjeer</LastEditBy>
+  <BITimeStamp>2025-10-23T16:22:15.533</BITimeStamp>
+</Archiver.dbo.cfgArchiveAndTailTable>
