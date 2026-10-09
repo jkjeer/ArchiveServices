@@ -36,6 +36,7 @@ namespace ArchiveServices.Common.Managers.Archie
             var nextRuntimeMoveAheadDays = Convert.ToInt32(ConfigurationManager.AppSettings["ArchieNextRuntimeMoveAheadDays"]);
             var maxDeleteSeconds = Convert.ToDecimal(ConfigurationManager.AppSettings["ArchieMaxDeleteSeconds"]);
             long maxDeleteRows = Convert.ToInt64(ConfigurationManager.AppSettings["ArchieMaxDeleteRows"]);
+            long maxStatsRows = Convert.ToInt64(ConfigurationManager.AppSettings["ArchieMaxStatsRows"]);
             LogProcessUpdate(cnArchConfig, tailTableNoVerifyConfig);
             var response = new ProcessResponse($@"BatchID [{batchID}] {batchName} ProcessID [{tailTableNoVerifyConfig.ProcessID}] {processName}", tailTableNoVerifyConfig, true);
             response.BatchID = batchID;
@@ -418,13 +419,19 @@ namespace ArchiveServices.Common.Managers.Archie
                     var stepGatherFinalStatistics = new ProcessStep(cnArchConfig, tailTableNoVerifyConfig.ProcessID, $@"Gather final statistics for {tailTableNoVerifyConfig.ServerQualifiedSourceName}");
                     try
                     {
-                        tailTableNoVerifyConfig.HighwaterMarkDate = GetHighWaterMarkDate(cnSource, tailTableNoVerifyConfig);
-                        tailTableNoVerifyConfig.HighwaterMarkDateString = tailTableNoVerifyConfig.HighwaterMarkDate.ToString("M/dd/yyyy hh:mm:ss tt", CultureInfo.CreateSpecificCulture("en-US"));
-                        tailTableNoVerifyConfig.RowsRemaining = GetRowsRemaining(cnSource, tailTableNoVerifyConfig);
-                        tailTableNoVerifyConfig.SourceFinalRowCount = GetRowCountSource(cnSource, tailTableNoVerifyConfig);
-                        tailTableNoVerifyConfig.SourceMinDate = GetMinSourceDate(cnSource, tailTableNoVerifyConfig);
-                        tailTableNoVerifyConfig.SourceMaxDate = GetMaxSourceDate(cnSource, tailTableNoVerifyConfig);
-                        tailTableNoVerifyConfig.SourceMaxDateString = tailTableNoVerifyConfig.SourceMaxDate.ToString("M/dd/yyyy hh:mm:ss tt", CultureInfo.CreateSpecificCulture("en-US"));
+                        if (tailTableNoVerifyConfig.SourceInitialRowCount < maxStatsRows) 
+                        {
+                            //tailTableNoVerifyConfig.RowsAffected = GetRowsAffected(cnSource, tailTableNoVerifyConfig);
+                            tailTableNoVerifyConfig.SourceRowCount = GetRowCountSource(cnSource, tailTableNoVerifyConfig);
+                            //tailTableNoVerifyConfig.SourceDays = GetSourceDays(cnSource, tailTableNoVerifyConfig);
+                            tailTableNoVerifyConfig.HighwaterMarkDate = GetHighWaterMarkDate(cnSource, tailTableNoVerifyConfig);
+                            tailTableNoVerifyConfig.HighwaterMarkDateString = tailTableNoVerifyConfig.HighwaterMarkDate.ToString("M/dd/yyyy hh:mm:ss tt", CultureInfo.CreateSpecificCulture("en-US"));
+                            tailTableNoVerifyConfig.RowsRemaining = GetRowsRemaining(cnSource, tailTableNoVerifyConfig);
+                            tailTableNoVerifyConfig.SourceFinalRowCount = GetRowCountSource(cnSource, tailTableNoVerifyConfig);
+                            tailTableNoVerifyConfig.SourceMinDate = GetMinSourceDate(cnSource, tailTableNoVerifyConfig);
+                            tailTableNoVerifyConfig.SourceMaxDate = GetMaxSourceDate(cnSource, tailTableNoVerifyConfig);
+                            tailTableNoVerifyConfig.SourceMaxDateString = tailTableNoVerifyConfig.SourceMaxDate.ToString("M/dd/yyyy hh:mm:ss tt", CultureInfo.CreateSpecificCulture("en-US"));
+                        }
                         if (statsOnly == true) tailTableNoVerifyConfig.LastRunStatus = "Success";
                         var stepUpdateHighWaterMark = new ProcessStep(cnArchConfig, tailTableNoVerifyConfig.ProcessID, $@"Update HighWaterMark for {tailTableNoVerifyConfig.ServerQualifiedSourceName}");
                         try
@@ -1356,7 +1363,7 @@ namespace ArchiveServices.Common.Managers.Archie
                            ,'{tailTableConfig.SourceKey}'
                            ,'{tailTableConfig.DateColumn}'
                            ,{tailTableConfig.RetentionDays}
-                           ,'{tailTableConfig.OtherCondition}'
+                           ,'{tailTableConfig.OtherCondition.Replace("'", "''")}'
                         );
                         SELECT SCOPE_IDENTITY();
                     "

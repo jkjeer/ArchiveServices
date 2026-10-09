@@ -182,12 +182,12 @@ namespace ArchiveServices.ArchieSvc
 
         public ProcessResponse TailTableNoVerify(string groupName, string plantCode, string serverName, string databaseName, string schemaName, string tableName, bool useHighwaterMark, bool statsOnly, bool sendReport)
         {
-            groupName = groupName ?? "CORP"; // string.Empty;
-            plantCode = plantCode ?? "CORP"; // string.Empty;
+            groupName = groupName ?? "VISI"; // string.Empty;
+            plantCode = plantCode ?? "ABCG"; // string.Empty;
             serverName = serverName ?? string.Empty;
-            databaseName = databaseName ?? "INTEGRATION"; // string.Empty;
-            schemaName = schemaName ?? "SVC"; // string.Empty;
-            tableName = tableName ?? string.Empty;
+            databaseName = databaseName ?? "ShopFloor"; // string.Empty;
+            schemaName = schemaName ?? "EBS"; // string.Empty;
+            tableName = tableName ?? "ShipmentPlanning"; // string.Empty;
             if (!string.IsNullOrEmpty(tableName))
             {
                 if (string.IsNullOrEmpty(groupName) && string.IsNullOrEmpty(plantCode) && string.IsNullOrEmpty(serverName))

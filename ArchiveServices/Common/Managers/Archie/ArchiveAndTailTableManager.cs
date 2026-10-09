@@ -774,7 +774,7 @@ namespace ArchiveServices.Common.Managers.Archie
                 cnDestination = ConnectionManager.GetSqlConnectionFromParts(serverName, databaseName);
                 cnDestination.Open();
             }
-            catch (Exception e)
+            catch (Exception) //e)
             {
                 var errMsg = $@"Unable to open a connection to Destination Database [{serverName}].[{databaseName}]";
                 Logger.Error($"ERROR: {errMsg}");
